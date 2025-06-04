@@ -1,9 +1,15 @@
 #!/bin/bash
 
-#Asks the user for the task they would like to add
+#User adds the Task
 read -p "Task... " task
 
-#Asks the user for additional info, e.g. priority
-read -p "Mods... " mod
+#User adds the Due Date (If Relevant)
+read -p "Due... " due
 
-task add "$task" $mod
+#User adds the Priority (If Relevant)
+read -p "Priority... " pri
+
+#User adds the Project (If Relevant)
+read -p "Project... " pro
+
+task add "$task" due:"$due" priority:"$pri" project:"$pro" 
