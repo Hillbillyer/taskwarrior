@@ -14,10 +14,21 @@ ALIASES=(
   "alias mod='bash $REPO_DIR/mod-task.sh'"
 )
 
-# Add each alias if it doesn't already exist
+# Temporary file for modified .bashrc
+TMP_BASHRC="$(mktemp)"
+
+# Prepend missing aliases to the temp file
 for ALIAS in "${ALIASES[@]}"; do
-  grep -qxF "$ALIAS" "$BASHRC" || echo "$ALIAS" >> "$BASHRC"
+  if ! grep -qxF "$ALIAS" "$BASHRC"; then
+    echo "$ALIAS" >> "$TMP_BASHRC"
+  fi
 done
+
+# Append the existing .bashrc content
+cat "$BASHRC" >> "$TMP_BASHRC"
+
+# Replace the original .bashrc
+mv "$TMP_BASHRC" "$BASHRC"
 
 # Clone the taskwarrior repo if it doesn't exist
 if [ ! -d "$REPO_DIR" ]; then
